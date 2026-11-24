@@ -90,17 +90,20 @@ def art(draw, kind, box):
         draw.rectangle([x0 + 4, y1 - 14, x0 + 22, y1 - 2], fill=NAVY)
         draw.rectangle([x1 - 22, y1 - 10, x1 - 4, y1 - 2], fill=NAVY)
     elif kind == "globe":
-        draw.ellipse([cx - 24, cy - 24, cx + 24, cy + 24], fill=(120, 170, 200))
-        draw.ellipse([cx - 24, cy - 24, cx + 24, cy + 24], outline=NAVY, width=2)
-        draw.arc([cx - 24, cy - 24, cx + 24, cy + 24], 200, 340, fill=GREEN, width=6)
-        draw.rectangle([cx + 16, cy - 26, cx + 22, cy + 10], fill=RED)
-        draw.ellipse([cx + 12, cy + 6, cx + 26, cy + 20], fill=RED)
+        r = min(w, h) // 2 - 2
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(120, 170, 200))
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], outline=NAVY, width=2)
+        draw.arc([cx - r, cy - r, cx + r, cy + r], 200, 340, fill=GREEN, width=4)
+        draw.rectangle([cx + r - 4, cy - r, cx + r, cy + r // 2], fill=RED)
+        draw.ellipse([cx + r // 2, cy, cx + r, cy + r // 2], fill=RED)
     elif kind == "chart":
         bars = [10, 18, 14, 26, 20, 30]
+        scale = (h - 8) / 30.0
         bw = w // 7
         for i, b in enumerate(bars):
+            bh = max(2, int(b * scale))
             bx = x0 + 4 + i * bw
-            draw.rectangle([bx, y1 - 4 - b, bx + bw - 3, y1 - 4],
+            draw.rectangle([bx, y1 - 4 - bh, bx + bw - 3, y1 - 4],
                            fill=RED if i == len(bars) - 1 else NAVY)
         draw.line([(x0 + 4, y0 + 8), (x1 - 4, y0 + 16)], fill=GREEN, width=2)
     elif kind == "capitol":
@@ -121,25 +124,51 @@ def art(draw, kind, box):
         draw.polygon([(cx, cy - 2), (cx + 8, cy + 10), (cx - 8, cy + 10)],
                      fill=(255, 210, 60))
     elif kind == "building":
-        draw.rectangle([x0 + 8, y0 + 8, x1 - 8, y1 - 2], fill=(230, 228, 220),
+        draw.rectangle([x0 + 4, y0 + 4, x1 - 4, y1 - 2], fill=(230, 228, 220),
                        outline=NAVY, width=2)
+        gw, gh = (w - 12) // 3, (h - 12) // 2
         for i in range(3):
             for j in range(2):
-                draw.rectangle([x0 + 14 + i * 14, y0 + 14 + j * 14,
-                                x0 + 24 + i * 14, y0 + 24 + j * 14], fill=BLUE)
-        draw.rectangle([cx - 8, y1 - 12, cx + 8, y1 - 2], fill=NAVY)
+                wx, wy = x0 + 6 + i * (gw + 2), y0 + 6 + j * (gh + 2)
+                draw.rectangle([wx, wy, wx + gw - 2, wy + gh - 2], fill=BLUE)
+        draw.rectangle([cx - 6, y1 - 10, cx + 6, y1 - 2], fill=NAVY)
     elif kind == "shield":
-        draw.polygon([(cx, y0 + 2), (cx + 20, y0 + 10), (cx + 20, cy + 6),
-                      (cx, y1 - 2), (cx - 20, cy + 6), (cx - 20, y0 + 10)],
+        hw, hh = w // 2 - 2, h // 2 - 2
+        draw.polygon([(cx, y0 + 2), (cx + hw, y0 + 6), (cx + hw, cy + hh // 2),
+                      (cx, y1 - 2), (cx - hw, cy + hh // 2), (cx - hw, y0 + 6)],
                      fill=NAVY)
-        draw.text((cx, cy - 2), "24", font=font(SANS_B, 13), fill=(255, 255, 255),
+        draw.polygon([(cx, y0 + 8), (cx + hw - 6, y0 + 11),
+                      (cx + hw - 6, cy + hh // 2 - 2), (cx, y1 - 7),
+                      (cx - hw + 6, cy + hh // 2 - 2), (cx - hw + 6, y0 + 11)],
+                     fill=(255, 255, 255))
+    elif kind == "chip":
+        draw.rectangle([x0 + 6, y0 + 10, x1 - 6, y1 - 10], fill=NAVY)
+        for i in range(4):
+            draw.rectangle([x0 + 10 + i * 10, y0 + 2, x0 + 16 + i * 10, y0 + 10],
+                           fill=(255, 210, 60))
+            draw.rectangle([x0 + 10 + i * 10, y1 - 10, x0 + 16 + i * 10, y1 - 2],
+                           fill=(255, 210, 60))
+        draw.text((cx, cy), "NVDA", font=font(SANS_B, 12),
+                  fill=(255, 255, 255), anchor="mm")
+    elif kind == "bat":
+        draw.rectangle([cx - 3, y0 + 2, cx + 3, cy - 4], fill=INK)
+        draw.rectangle([cx - 9, cy - 6, cx + 9, y1 - 4], fill=(190, 145, 80),
+                       outline=INK)
+        draw.ellipse([x1 - 16, y0 + 2, x1 - 2, y0 + 16], fill=RED)
+    elif kind == "coin":
+        r = min(w, h) // 2 - 2
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(255, 200, 40),
+                     outline=(180, 130, 0), width=3)
+        draw.text((cx, cy), "B", font=font(SANS_B, r), fill=(120, 85, 0),
                   anchor="mm")
     elif kind == "ball":
-        draw.ellipse([cx - 22, cy - 22, cx + 22, cy + 22], fill=(255, 255, 255),
+        r = min(w, h) // 2 - 2
+        draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(255, 255, 255),
                      outline=INK, width=2)
-        draw.polygon([(cx, cy - 10), (cx + 10, cy - 3), (cx + 6, cy + 9),
-                      (cx - 6, cy + 9), (cx - 10, cy - 3)], fill=INK)
-        draw.line([(cx, cy - 22), (cx, cy - 10)], fill=INK, width=2)
+        draw.polygon([(cx, cy - r // 2), (cx + r // 2, cy - r // 6),
+                      (cx + r // 3, cy + r // 2), (cx - r // 3, cy + r // 2),
+                      (cx - r // 2, cy - r // 6)], fill=INK)
+        draw.line([(cx, cy - r), (cx, cy - r // 2)], fill=INK, width=2)
     elif kind == "warning":
         draw.polygon([(cx, y0 + 2), (x1 - 4, y1 - 2), (x0 + 4, y1 - 2)],
                      fill=(255, 200, 40), outline=INK)

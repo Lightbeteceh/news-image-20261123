@@ -1,8 +1,9 @@
 """Entry point: render the 23 November 2026 news image.
 
-Reads stories.json next to this file, draws the newspaper page with
-render.py and writes entry.png. Deterministic: same input bytes give
-the same output bytes. No network, no clocks, no randomness.
+Reads stories.json sitting next to this file, draws the newspaper
+page through render.py and writes entry.png. Deterministic: the same
+input bytes always give the same output bytes. No network, no clocks,
+no randomness, no bundled assets — system DejaVu fonts only.
 """
 import os
 import sys

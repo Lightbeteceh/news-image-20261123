@@ -22,6 +22,8 @@ vector drawings made by the program itself — no photos.
 
 Lead story: Ukraine sinks the Russian corvette Merkury off Libya with
 seven naval drones, confirmed by President Zelenskyy on Monday.
+Second card: Nvidia brings Jensen Huang back as CEO and Wall Street
+posts its best day since April 2025.
 
 ## Run it
 
@@ -30,7 +32,7 @@ python3 main.py
 # writes entry.png next to main.py (or $OUTPUT_PATH)
 ```
 
-Python 3.13, Pillow only, no network. Deterministic: run it twice and
+Python 3.12, Pillow only, no network. Deterministic: run it twice and
 the bytes are identical.
 
 ## Files
@@ -44,7 +46,8 @@ the bytes are identical.
 ## Verification
 
 Every story in `stories.json` carries a source and a verification tag.
-Stories first reported before 23 November 2026 are listed in the
-DATE CHECK box and kept out of the story count. This is a prep draft
-built on a partial day (cut-off ~09:45 UTC); the final image is
-re-verified against the full day before submission.
+The research covers the full day of Monday 23 November 2026
+(cut-off 00:00 UTC Tuesday 24 Nov). Stories first reported before
+23 November are listed in the DATE CHECK box and kept out of the
+story count; the Monday-night NFL result falls after the cut-off and
+is listed as scheduled, not scored.
